@@ -27,9 +27,9 @@ function getSpecimenLabel(s) {
     return `${s.organ}, ${s.disease}`;
 }
 
-// Image path helper - URL-encodes filename to ensure file:// protocol compatibility and loads from the '無標籤' folder
+// Image path helper - URL-encodes filename to ensure file:// protocol compatibility and loads from the 'no_label' folder
 function getImagePath(filename) {
-    return '無標籤/' + encodeURIComponent(filename);
+    return 'no_label/' + encodeURIComponent(filename);
 }
 
 // Initialize App
