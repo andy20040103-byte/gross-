@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>病理 Gross 考試刷題與複習系統</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Style Sheet -->
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <!-- App Container -->
+    <div id="app">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-logo" id="btn-header-home">
+                <span class="logo-icon">🔬</span>
+                <div class="logo-text">
+                    <h1>病理 Gross</h1>
+                    <p>考試刷題與複習系統</p>
+                </div>
+            </div>
+            <nav class="header-nav">
+                <button id="nav-home" class="nav-btn active">首頁選單</button>
+                <button id="nav-review" class="nav-btn">全面複習區</button>
+            </nav>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="app-content">
+            
+            <!-- VIEW: Home / Mode Selection -->
+            <section id="view-home" class="app-view active">
+                <div class="hero-section">
+                    <h2>準備好您的病理 Gross 期末考了嗎？</h2>
+                    <p>本系統收錄了 120 張病理大體檢體照片。刷題模式與複習區皆採用紅塊遮擋標籤的圖片，助您專注於辨識檢體本身的病理特徵，高效備考！</p>
+                </div>
+
+                <div class="modes-grid">
+                    <!-- Mixed Mode Card -->
+                    <div class="mode-card" id="card-mode-mixed">
+                        <div class="mode-card-icon">🌪️</div>
+                        <h3>隨機混合大對決 (120題)</h3>
+                        <p>打亂所有器官與疾病，隨機排序進行完整模擬測驗。每張照片都會考到，適合考前總複習！</p>
+                        <button class="btn btn-primary">開始挑戰</button>
+                    </div>
+
+                    <!-- Organ Mode Card -->
+                    <div class="mode-card" id="card-mode-organ">
+                        <div class="mode-card-icon">🫁</div>
+                        <h3>各器官分類挑戰</h3>
+                        <p>針對特定器官進行精準打擊！點選下方器官開始局部專題刷題，逐一擊破弱點。</p>
+                        <div class="organ-list" id="home-organ-list">
+                            <!-- Dynamically populated organs -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW: Quiz Screen -->
+            <section id="view-quiz" class="app-view">
+                <div class="quiz-container">
+                    <!-- Quiz Header Info -->
+                    <div class="quiz-header">
+                        <div class="quiz-info">
+                            <span class="quiz-mode-badge" id="quiz-title-badge">混合題庫</span>
+                            <span class="quiz-progress" id="quiz-progress-text">第 1 / 120 題</span>
+                        </div>
+                        <button class="btn btn-outline-danger" id="btn-quiz-exit">中途退出</button>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" id="quiz-progress-bar" style="width: 0%"></div>
+                    </div>
+
+                    <!-- Quiz Work Area (Split view or single view based on state) -->
+                    <div class="quiz-work-area" id="quiz-work-area">
+                        <!-- Question Panel -->
+                        <div class="quiz-question-panel" id="quiz-question-panel">
+                            <div class="image-wrapper">
+                                <img id="quiz-question-image" src="" alt="檢體照片">
+                                <div id="quiz-image-error" class="hidden" style="color: var(--danger); font-weight: 600; text-align: center; padding: 20px; font-size: 13px; line-height: 1.4;"></div>
+                                <div class="image-overlay-text">題目照片（標籤已紅塊遮擋）</div>
+                            </div>
+                        </div>
+
+                        <!-- Answer Selection & Interactive Review Panel -->
+                        <div class="quiz-interaction-panel">
+                            <!-- State A: Option Selection (Before answering) -->
+                            <div class="interaction-state" id="state-selection">
+                                <h3 class="panel-instruction">請選擇正確的診斷名稱：</h3>
+                                <div class="options-grid" id="quiz-options-container">
+                                    <!-- 4 Options populated here -->
+                                </div>
+                            </div>
+
+                            <!-- State B: Post-Answer Option Comparison View -->
+                            <div class="interaction-state hidden" id="state-comparison">
+                                <!-- Feedback Banner -->
+                                <div class="feedback-banner" id="quiz-feedback-banner">
+                                    <div class="feedback-icon" id="quiz-feedback-icon">✓</div>
+                                    <div class="feedback-text">
+                                        <h4 id="quiz-feedback-title">回答正確！</h4>
+                                        <p id="quiz-feedback-desc">正確答案為：Ovary, mature teratoma</p>
+                                    </div>
+                                </div>
+
+                                <h3 class="panel-instruction">💡 點選下方按鈕，可於右側切換查看各選項的對照圖片：</h3>
+                                <div class="comparison-options-grid" id="comparison-options-container">
+                                    <!-- 4 comparison buttons -->
+                                </div>
+
+                                <div class="action-row">
+                                    <button class="btn btn-success btn-lg" id="btn-quiz-next">下一題</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Option Preview Side Panel (Visible during State B) -->
+                        <div class="quiz-preview-panel hidden" id="quiz-preview-panel">
+                            <div class="image-wrapper">
+                                <img id="quiz-preview-image" src="" alt="選項對照圖">
+                                <div class="image-overlay-text" id="quiz-preview-overlay-text">點選選項查看對照圖</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW: Quiz Summary Screen -->
+            <section id="view-summary" class="app-view">
+                <div class="summary-container">
+                    <div class="summary-card">
+                        <div class="summary-icon">🏆</div>
+                        <h2>挑戰完成！</h2>
+                        <div class="score-display">
+                            <span class="score-num" id="summary-score">92</span>
+                            <span class="score-total" id="summary-total">/ 120 分</span>
+                        </div>
+                        <p class="summary-msg" id="summary-message">太棒了！您對病理檢體的辨識度極高，繼續保持！</p>
+                        
+                        <div class="summary-stats">
+                            <div class="stat-item">
+                                <span class="stat-val" id="stat-correct">92</span>
+                                <span class="stat-label">答對題數</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-val" id="stat-incorrect">28</span>
+                                <span class="stat-label">答錯題數</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-val" id="stat-rate">76%</span>
+                                <span class="stat-label">正確率</span>
+                            </div>
+                        </div>
+
+                        <div class="summary-actions">
+                            <button class="btn btn-primary btn-lg" id="btn-summary-restart">再試一次</button>
+                            <button class="btn btn-outline btn-lg" id="btn-summary-home">返回主選單</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW: Review Gallery Screen -->
+            <section id="view-review" class="app-view">
+                <div class="review-header-bar">
+                    <div class="review-title">
+                        <h2>全面複習圖鑑區</h2>
+                        <p>在此可以瀏覽全部 120 張檢體的無標籤照片，支援關鍵字快速搜尋。</p>
+                    </div>
+                    <div class="search-box-container">
+                        <input type="text" id="search-input" placeholder="搜尋器官或疾病診斷名稱... (如: Ovary, cancer)">
+                        <span class="search-icon">🔍</span>
+                    </div>
+                </div>
+
+                <!-- Review Filter Tabs -->
+                <div class="filter-tabs" id="review-organ-tabs">
+                    <button class="tab-btn active" data-organ="all">全部器官</button>
+                    <!-- Populated dynamically -->
+                </div>
+
+                <!-- Gallery Grid -->
+                <div class="gallery-grid" id="review-gallery-container">
+                    <!-- Specimen cards populated here -->
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Lightbox Modal for Full Image View -->
+    <div class="lightbox-modal" id="image-lightbox">
+        <span class="lightbox-close" id="lightbox-close-btn">&times;</span>
+        <div class="lightbox-content-container">
+            <img class="lightbox-img" id="lightbox-image-src" src="" alt="放大圖片">
+            <div class="lightbox-caption" id="lightbox-caption-text">Caption</div>
+        </div>
+    </div>
+
+    <!-- JavaScript Database -->
+    <script src="db.js"></script>
+    <!-- Application Logic -->
+    <script src="script.js"></script>
+</body>
+</html>
