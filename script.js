@@ -27,9 +27,9 @@ function getSpecimenLabel(s) {
     return `${s.organ}, ${s.disease}`;
 }
 
-// Image path helper - URL-encodes filename to ensure file:// protocol compatibility and loads from the 'no_label' folder
+// Image path helper - replaces spaces with %20 for URL compatibility and loads from the 'no_label' folder
 function getImagePath(filename) {
-    return 'no_label/' + encodeURIComponent(filename);
+    return 'no_label/' + filename.replace(/ /g, '%20');
 }
 
 // Initialize App
